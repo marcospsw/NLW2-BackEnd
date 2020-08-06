@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'; 
+
 import db from '../database/connection';
 import convertHourToMinutes from '../utils/convertHourToMinutes';
 
@@ -6,7 +7,7 @@ interface ScheduleItem{
   week_day: number;
   from: string;
   to: string;
-}
+};
 
 export default class ClassesController{
   async index(request: Request,response: Response){
@@ -23,7 +24,7 @@ export default class ClassesController{
       return response.status(400).json({
         error: 'Missing filters to search classes'
       })      
-    }
+    };
 
     const timeInMinutes = convertHourToMinutes(time);
     
@@ -38,7 +39,7 @@ export default class ClassesController{
 
     })
       .where('classes.subject', '=', subject)
-      .join('users', 'classes.user_id', '=', 'user_id')
+      .join('users', 'classes.user_id', '=', 'users.id')
       .select(['classes.*', 'users.*']);
 
     return response.json(classes);
